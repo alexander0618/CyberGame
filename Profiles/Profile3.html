@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PictureYou - @helenad.critiques</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-color: #F1F0E9;
+      color: #0D4715;
+      font-family: 'Inter', sans-serif;
+    }
+    .autocomplete-suggestions {
+      background-color: #41644A;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      margin-top: 0.5rem;
+      max-height: 200px;
+      overflow-y: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      position: absolute;
+      width: 100%;
+      z-index: 10;
+    }
+    .autocomplete-suggestions div {
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      color: #F1F0E9;
+    }
+    .autocomplete-suggestions div:hover {
+      background-color: #E9762B;
+      color: #0D4715;
+    }
+    .fade-in {
+      animation: fadeIn 1s ease-in-out;
+    }
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(10px);}
+      100% { opacity: 1; transform: translateY(0);}
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center px-4 py-6 space-y-6">
+
+  <!-- Search Bar at Top -->
+  <div class="w-full max-w-md text-center relative">
+    <input 
+      id="searchInput"
+      type="text" 
+      placeholder="Search users..."
+      class="w-full py-3 px-5 rounded-2xl text-[#0D4715] focus:outline-none focus:ring-2 focus:ring-[#E9762B] placeholder-[#41644A]"
+      style="background-color: #ffffff;"
+    />
+    <div id="suggestions" class="autocomplete-suggestions hidden"></div>
+  </div>
+
+  <!-- Profile Header -->
+  <div class="w-full max-w-md text-center fade-in">
+    <img src="profile.jpg" alt="Profile Picture" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-4 border-[#41644A]">
+    <h1 class="text-2xl font-bold">@helenad.critiques</h1>
+    <p class="text-sm text-[#41644A] mt-2">
+      Restaurant critic @TimeOut | Culinary explorer<br/>
+      Sharing honest bites from around the world | Opinions are seasoned.
+    </p>
+    
+    <!-- Followers Section -->
+    <div class="flex justify-around mt-6 text-[#0D4715]">
+      <div>
+        <span class="font-bold text-lg">1,482</span><br/>
+        <span class="text-xs">Followers</span>
+      </div>
+      <div>
+        <span class="font-bold text-lg">321</span><br/>
+        <span class="text-xs">Following</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Posts Section -->
+  <div class="w-full max-w-md mt-8 space-y-8 fade-in">
+    
+    <!-- Post 1 -->
+    <div class="bg-white rounded-xl overflow-hidden shadow-md">
+      <img src="1.jpg" alt="Post 1" class="w-full object-cover">
+      <div class="p-4">
+        <div class="flex justify-between items-center text-sm text-[#41644A] mb-2">
+          <span>❤️ 352 likes</span>
+          <span>Apr 12, 2025</span>
+        </div>
+        <p class="text-[#0D4715] text-sm">
+          Tonight’s hidden gem in Lisbon: impeccable service, but the risotto could use more soul. #FoodReview #LisbonEats
+        </p>
+      </div>
+    </div>
+
+    <!-- Post 2 -->
+    <div class="bg-white rounded-xl overflow-hidden shadow-md">
+      <img src="2.jpg" alt="Post 2" class="w-full object-cover">
+      <div class="p-4">
+        <div class="flex justify-between items-center text-sm text-[#41644A] mb-2">
+          <span>❤️ 421 likes</span>
+          <span>Apr 19, 2025</span>
+        </div>
+        <p class="text-[#0D4715] text-sm">
+          Prepping my next column — caffeine first, critiques later. #WriterLife #FoodCritic
+        </p>
+      </div>
+    </div>
+
+    <!-- Post 3 -->
+    <div class="bg-white rounded-xl overflow-hidden shadow-md">
+      <img src="3.jpg" alt="Post 3" class="w-full object-cover">
+      <div class="p-4">
+        <div class="flex justify-between items-center text-sm text-[#41644A] mb-2">
+          <span>❤️ 598 likes</span>
+          <span>May 2, 2025</span>
+        </div>
+        <p class="text-[#0D4715] text-sm">
+          Grateful to celebrate another year with the amazing @TimeOut team. Food journalism matters. #TimeOutAwards
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Script for search functionality -->
+  <script>
+    const searchInput = document.getElementById('searchInput');
+    const suggestionsBox = document.getElementById('suggestions');
+
+    // Simulated users
+    const users = [
+      { username: "@helenad.critiques", path: "Profile1.html" }
+    ];
+
+    searchInput.addEventListener('input', function() {
+      const input = this.value.toLowerCase();
+      suggestionsBox.innerHTML = '';
+
+      if (input.length === 0) {
+        suggestionsBox.classList.add('hidden');
+        return;
+      }
+
+      const filteredUsers = users.filter(user => user.username.toLowerCase().includes(input));
+      
+      if (filteredUsers.length === 0) {
+        suggestionsBox.classList.add('hidden');
+        return;
+      }
+
+      filteredUsers.forEach(user => {
+        const div = document.createElement('div');
+        div.textContent = user.username;
+        div.addEventListener('click', () => {
+          window.location.href = user.path;
+        });
+        suggestionsBox.appendChild(div);
+      });
+
+      suggestionsBox.classList.remove('hidden');
+    });
+
+    // Hide suggestions when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!searchInput.contains(e.target) && !suggestionsBox.contains(e.target)) {
+        suggestionsBox.classList.add('hidden');
+      }
+    });
+  </script>
+
+</body>
+</html>
